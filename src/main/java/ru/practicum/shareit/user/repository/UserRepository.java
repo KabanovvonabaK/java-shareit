@@ -16,4 +16,8 @@ public interface UserRepository {
     List<User> getAll();
 
     void checkUserExist(int userId);
+
+    void checkEmail(String email);
+
+    void checkEmail(int userId, String email);
 }

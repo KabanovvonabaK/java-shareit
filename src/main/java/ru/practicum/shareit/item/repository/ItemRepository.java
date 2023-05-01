@@ -14,4 +14,6 @@ public interface ItemRepository {
     List<Item> getByOwnerId(int userId);
 
     List<Item> search(String text);
+
+    void checkItemExist(int itemId);
 }

@@ -8,6 +8,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -18,24 +19,34 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAll() {
+    public List<UserDto> getAll() {
         log.info("Attempt to get all users.");
-        return userRepository.getAll();
+        return userRepository.getAll().stream().map(UserMapper::toUserDto).collect(Collectors.toList());
     }
 
-    public User create(UserDto user) {
+    public UserDto create(UserDto user) {
         log.info("Attempt to create new user {}", user);
-        return userRepository.create(UserMapper.toUser(user));
+        return UserMapper.toUserDto(userRepository.create(UserMapper.toUser(user)));
     }
 
-    public User getUserById(int id) {
+    public UserDto getUserById(int id) {
         log.info("Attempt to get user with id {}", id);
-        return userRepository.get(id);
+        userRepository.checkUserExist(id);
+        return UserMapper.toUserDto(userRepository.get(id));
     }
 
-    public User updateUser(int userId, UserDto userDto) {
+    public UserDto updateUser(int userId, UserDto userDto) {
         log.info("Attempt to updated user {}", userDto);
-        return userRepository.update(userId, UserMapper.toUser(userDto));
+        userRepository.checkUserExist(userId);
+        userRepository.checkEmail(userId, userDto.getEmail());
+        User user = userRepository.get(userId);
+        if (userDto.getName() != null) {
+            user.setName(userDto.getName());
+        }
+        if (userDto.getEmail() != null) {
+            user.setEmail(userDto.getEmail());
+        }
+        return UserMapper.toUserDto(userRepository.update(userId, user));
     }
 
     public void deleteUser(int id) {

@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 public class UserDto {
+    private int id;
     @NotBlank(message = "Name is mandatory")
     private String name;
     @NotBlank(message = "Email is mandatory")
