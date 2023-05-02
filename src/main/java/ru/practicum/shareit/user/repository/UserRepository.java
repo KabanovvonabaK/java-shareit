@@ -19,5 +19,5 @@ public interface UserRepository {
 
     void checkEmail(String email);
 
-    void checkEmail(int userId, String email);
+    void checkUserExistAndEmail(int userId, String email);
 }

@@ -8,11 +8,12 @@ import ru.practicum.shareit.user.model.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserInMemoryRepository implements UserRepository {
 
-    private final HashMap<Integer, User> users = new HashMap<>();
+    private final Map<Integer, User> users = new HashMap<>();
     private int id = 1;
 
     @Override
@@ -31,7 +32,7 @@ public class UserInMemoryRepository implements UserRepository {
     @Override
     public User update(int userId, User user) {
         users.put(userId, user);
-        return get(userId);
+        return user;
     }
 
     @Override
@@ -57,7 +58,10 @@ public class UserInMemoryRepository implements UserRepository {
         }
     }
 
-    public void checkEmail(int userId, String email) {
+    public void checkUserExistAndEmail(int userId, String email) {
+        if (!users.containsKey(userId)) {
+            throw new EntityNotFoundException(String.format("User with id %s not exist", userId));
+        }
         if (users.values().stream().anyMatch(user -> user.getEmail().equals(email) && user.getId() != userId)) {
             throw new EmailAlreadyExistException(String.format("User with email %s already exist", email));
         }

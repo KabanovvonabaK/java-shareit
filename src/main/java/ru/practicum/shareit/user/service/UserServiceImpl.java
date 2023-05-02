@@ -37,16 +37,15 @@ public class UserServiceImpl implements UserService {
 
     public UserDto updateUser(int userId, UserDto userDto) {
         log.info("Attempt to updated user {}", userDto);
-        userRepository.checkUserExist(userId);
-        userRepository.checkEmail(userId, userDto.getEmail());
+        userRepository.checkUserExistAndEmail(userId, userDto.getEmail());
         User user = userRepository.get(userId);
-        if (userDto.getName() != null) {
+        if (userDto.getName() != null && !userDto.getName().isBlank()) {
             user.setName(userDto.getName());
         }
-        if (userDto.getEmail() != null) {
+        if (userDto.getEmail() != null && !userDto.getEmail().isBlank()) {
             user.setEmail(userDto.getEmail());
         }
-        return UserMapper.toUserDto(userRepository.update(userId, user));
+        return UserMapper.toUserDto(user);
     }
 
     public void deleteUser(int id) {

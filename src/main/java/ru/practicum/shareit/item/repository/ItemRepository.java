@@ -7,13 +7,9 @@ import java.util.List;
 public interface ItemRepository {
     Item create(Item item, int userId);
 
-    Item updateItem(int itemId, int userId, Item item);
-
     Item getByItemId(int itemId);
 
     List<Item> getByOwnerId(int userId);
 
     List<Item> search(String text);
-
-    void checkItemExist(int itemId);
 }
