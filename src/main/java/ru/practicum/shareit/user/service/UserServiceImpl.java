@@ -1,60 +1,56 @@
 package ru.practicum.shareit.user.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.errorHandler.exception.EntityNotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     public List<UserDto> getAll() {
         log.info("Attempt to get all users.");
-        return userRepository.getAll().stream().map(UserMapper::toUserDto).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(UserMapper::toUserDto).collect(Collectors.toList());
     }
 
-    public UserDto create(UserDto user) {
-        log.info("Attempt to create new user {}", user);
-        return UserMapper.toUserDto(userRepository.create(UserMapper.toUser(user)));
+    public UserDto create(UserDto userDto) {
+        log.info("Attempt to create new user {}", userDto);
+        User user = UserMapper.toUser(userDto, new User());
+        return Optional.of(userRepository.save(user)).map(UserMapper::toUserDto).orElseThrow();
     }
 
     public UserDto getUserById(int id) {
         log.info("Attempt to get user with id {}", id);
-        userRepository.checkUserExist(id);
-        return UserMapper.toUserDto(userRepository.get(id));
+        return userRepository
+                .findById(id)
+                .map(UserMapper::toUserDto)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %s not exist", id)));
     }
 
     public UserDto updateUser(int userId, UserDto userDto) {
         log.info("Attempt to updated user {}", userDto);
-        userRepository.checkUserExistAndEmail(userId, userDto.getEmail());
-        User user = userRepository.get(userId);
-        if (userDto.getName() != null && !userDto.getName().isBlank()) {
-            user.setName(userDto.getName());
-        }
-        if (userDto.getEmail() != null && !userDto.getEmail().isBlank()) {
-            user.setEmail(userDto.getEmail());
-        }
-        return UserMapper.toUserDto(user);
+        User oldUser = UserMapper.toUser(getUserById(userId));
+        UserDto user = Optional.of(userRepository.save(UserMapper.toUser(userDto, oldUser)))
+                .map(UserMapper::toUserDto)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %s not exist", userId)));
+
+        return user;
     }
 
     public void deleteUser(int id) {
         log.info("Attempt to delete user with id {}", id);
-        userRepository.delete(id);
-    }
-
-    public void checkUserExist(int id) {
-        log.info("Checking that user with id {} exist", id);
-        userRepository.checkUserExist(id);
+        User user = UserMapper.toUser(getUserById(id));
+        userRepository.deleteById(user.getId());
     }
 }
