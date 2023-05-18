@@ -133,7 +133,7 @@ public class BookingServiceImpl implements BookingService {
         }
         if (bookingInputDto.getEnd().isBefore(bookingInputDto.getStart())
                 || bookingInputDto.getEnd().equals(bookingInputDto.getStart())
-                ||bookingInputDto.getStart().isBefore(LocalDateTime.now())) {
+                || bookingInputDto.getStart().isBefore(LocalDateTime.now())) {
             throw new BookingTimeException("End must be after start");
         }
 
