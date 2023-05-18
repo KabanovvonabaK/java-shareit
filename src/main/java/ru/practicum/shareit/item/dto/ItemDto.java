@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.booking.dto.BookingShortDto;
@@ -26,13 +25,6 @@ public class ItemDto {
     private BookingShortDto lastBooking;
     private BookingShortDto nextBooking;
     private List<CommentDto> comments;
-
-    public ItemDto(String name, String description, Boolean available, UserShortDto owner) {
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.owner = owner;
-    }
 
     public ItemDto(int id, String name, String description, Boolean available, UserShortDto owner) {
         this.id = id;

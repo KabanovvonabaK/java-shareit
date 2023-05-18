@@ -118,7 +118,6 @@ public class BookingServiceImpl implements BookingService {
                         .format("Booking with id %s not exist", bookingId)));
     }
 
-
     @Transactional
     @Override
     public BookingDto create(int userId, BookingInputDto bookingInputDto) {
