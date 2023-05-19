@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class BookingInputDto {
+public class BookingRequestDto {
     @Future
     @NotNull(groups = {Create.class}, message = "Start is mandatory")
     private LocalDateTime start;

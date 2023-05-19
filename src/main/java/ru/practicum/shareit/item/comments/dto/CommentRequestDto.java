@@ -6,7 +6,7 @@ import ru.practicum.shareit.utils.Create;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class CommentInputDto {
+public class CommentRequestDto {
     @NotBlank(groups = {Create.class}, message = "Text is mandatory")
     private String text;
 }

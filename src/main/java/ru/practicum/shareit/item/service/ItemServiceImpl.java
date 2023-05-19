@@ -10,9 +10,8 @@ import ru.practicum.shareit.errorHandler.exception.EntityNotFoundException;
 import ru.practicum.shareit.errorHandler.exception.UserIsNotAnOwnerException;
 import ru.practicum.shareit.errorHandler.exception.UserNotBookedException;
 import ru.practicum.shareit.item.comments.CommentMapper;
-import ru.practicum.shareit.item.comments.dto.Comment;
 import ru.practicum.shareit.item.comments.dto.CommentDto;
-import ru.practicum.shareit.item.comments.dto.CommentInputDto;
+import ru.practicum.shareit.item.comments.dto.CommentRequestDto;
 import ru.practicum.shareit.item.comments.repository.CommentRepository;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
@@ -89,7 +88,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public CommentDto addComment(int userId, int itemId, CommentInputDto commentInputDto) {
+    public CommentDto addComment(int userId, int itemId, CommentRequestDto commentRequestDto) {
         log.info("Adding comment to item with id {}", itemId);
         User user = UserMapper.toUser(userService.getUserById(userId));
         Item item = ItemMapper.toItem(getByItemId(userId, itemId));
@@ -98,11 +97,7 @@ public class ItemServiceImpl implements ItemService {
             throw new UserNotBookedException("The user not booked this item");
         }
 
-        Comment comment = new Comment();
-        comment.setItem(item);
-        comment.setAuthor(user);
-
-        return Optional.of(commentRepository.save(CommentMapper.toComment(commentInputDto, comment)))
+        return Optional.of(commentRepository.save(CommentMapper.toComment(commentRequestDto, item, user)))
                 .map(CommentMapper::toCommentDto)
                 .orElseThrow();
     }

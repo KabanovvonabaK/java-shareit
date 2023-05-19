@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.dto.BookingDto;
-import ru.practicum.shareit.booking.dto.BookingInputDto;
+import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
@@ -120,10 +120,10 @@ public class BookingServiceImpl implements BookingService {
 
     @Transactional
     @Override
-    public BookingDto create(int userId, BookingInputDto bookingInputDto) {
+    public BookingDto create(int userId, BookingRequestDto bookingRequestDto) {
         log.info("Creating booking by user with id {}", userId);
         User booker = UserMapper.toUser(userService.getUserById(userId));
-        Item item = ItemMapper.toItem(itemService.getByItemId(userId, bookingInputDto.getItemId()));
+        Item item = ItemMapper.toItem(itemService.getByItemId(userId, bookingRequestDto.getItemId()));
 
         if (booker.getId() == item.getOwner().getId()) {
             throw new IllegalArgumentException("Impossible to book your own items.");
@@ -131,9 +131,9 @@ public class BookingServiceImpl implements BookingService {
         if (!item.getAvailable()) {
             throw new IllegalStateException(String.format("Item with id %s is unavailable", item.getId()));
         }
-        if (bookingInputDto.getEnd().isBefore(bookingInputDto.getStart())
-                || bookingInputDto.getEnd().equals(bookingInputDto.getStart())
-                || bookingInputDto.getStart().isBefore(LocalDateTime.now())) {
+        if (bookingRequestDto.getEnd().isBefore(bookingRequestDto.getStart())
+                || bookingRequestDto.getEnd().equals(bookingRequestDto.getStart())
+                || bookingRequestDto.getStart().isBefore(LocalDateTime.now())) {
             throw new BookingTimeException("End must be after start");
         }
 
@@ -141,7 +141,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setItem(item);
         booking.setBooker(booker);
 
-        return Optional.of(bookingRepository.save(BookingMapper.toBooking(bookingInputDto, booking)))
+        return Optional.of(bookingRepository.save(BookingMapper.toBooking(bookingRequestDto, booking)))
                 .map(BookingMapper::toBookingDto)
                 .orElseThrow();
     }
