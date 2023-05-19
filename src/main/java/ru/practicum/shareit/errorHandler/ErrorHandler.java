@@ -6,10 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.errorHandler.exception.EmailAlreadyExistException;
-import ru.practicum.shareit.errorHandler.exception.EntityNotFoundException;
-import ru.practicum.shareit.errorHandler.exception.FieldNotFoundException;
-import ru.practicum.shareit.errorHandler.exception.UserIsNotAnOwnerException;
+import ru.practicum.shareit.errorHandler.exception.*;
 
 import java.util.Arrays;
 
@@ -60,6 +57,54 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        log.error(e.getMessage());
+        log.error(Arrays.toString(e.getStackTrace()));
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBookingTimeException(final BookingTimeException e) {
+        log.error(e.getMessage());
+        log.error(Arrays.toString(e.getStackTrace()));
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleBookingViewException(final BookingViewException e) {
+        log.error(e.getMessage());
+        log.error(Arrays.toString(e.getStackTrace()));
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleBookingConfirmationException(final BookingConfirmationException e) {
+        log.error(e.getMessage());
+        log.error(Arrays.toString(e.getStackTrace()));
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIllegalStateException(final IllegalStateException e) {
+        log.error(e.getMessage());
+        log.error(Arrays.toString(e.getStackTrace()));
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleIllegalArgumentException(final IllegalArgumentException e) {
+        log.error(e.getMessage());
+        log.error(Arrays.toString(e.getStackTrace()));
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleUserNotBookedException(final UserNotBookedException e) {
         log.error(e.getMessage());
         log.error(Arrays.toString(e.getStackTrace()));
         return new ErrorResponse(e.getMessage());
