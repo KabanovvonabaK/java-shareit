@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
@@ -17,6 +18,8 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
@@ -35,6 +38,7 @@ public class ItemServiceImpl implements ItemService {
     private final UserService userService;
     private final CommentRepository commentRepository;
     private final BookingRepository bookingRepository;
+    private final ItemRequestRepository itemRequestRepository;
 
     @Override
     public ItemDto create(ItemDto itemDto, int userId) {
@@ -42,6 +46,12 @@ public class ItemServiceImpl implements ItemService {
         User user = UserMapper.toUser(userService.getUserById(userId));
         Item item = new Item();
         item.setOwner(user);
+        if (itemDto.getRequestId() != null) {
+            ItemRequest itemRequest = itemRequestRepository
+                    .findById(itemDto.getRequestId())
+                    .orElseThrow(() -> new EntityNotFoundException("Request not found"));
+            item.setRequest(itemRequest);
+        }
         return Optional.of(itemRepository.save(ItemMapper.toItem(itemDto, item))).map(ItemMapper::toItemDto).orElseThrow();
     }
 
@@ -78,6 +88,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public List<ItemDto> getByOwnerId(int userId, PageRequest pageRequest) {
+        log.info("Attempt to get item by userId {} with pagination", userId);
+        userService.getUserById(userId);
+        return itemRepository.findAllByOwnerId(userId, pageRequest)
+                .stream().map(item -> addData(userId, item)).collect(Collectors.toList());
+    }
+
+    @Override
     public List<ItemDto> search(String text) {
         log.info("Attempt to search by \"{}\"", text);
         return itemRepository
@@ -85,6 +103,17 @@ public class ItemServiceImpl implements ItemService {
                 .stream()
                 .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemDto> search(int userId, String text, PageRequest pageRequest) {
+        log.info("Attempt to search by \"{}\" with pagination", text);
+        userService.getUserById(userId);
+        return itemRepository
+                .findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text,
+                        text, pageRequest)
+                .map(ItemMapper::toItemDto)
+                .getContent();
     }
 
     @Override
@@ -100,6 +129,22 @@ public class ItemServiceImpl implements ItemService {
         return Optional.of(commentRepository.save(CommentMapper.toComment(commentRequestDto, item, user)))
                 .map(CommentMapper::toCommentDto)
                 .orElseThrow();
+    }
+
+    @Override
+    public List<ItemDto> findAllByRequestIdIn(List<Integer> listRequestIds) {
+        return itemRepository.findAllByRequestIdIn(listRequestIds)
+                .stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemDto> findAllByRequestId(int requestId) {
+        return itemRepository.findAllByRequestId(requestId)
+                .stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 
     private ItemDto addData(int userId, Item item) {

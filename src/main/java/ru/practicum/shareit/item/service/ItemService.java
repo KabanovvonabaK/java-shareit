@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.service;
 
+import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.item.comments.dto.CommentDto;
 import ru.practicum.shareit.item.comments.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -15,7 +16,15 @@ public interface ItemService {
 
     List<ItemDto> getByOwnerId(int userId);
 
+    List<ItemDto> getByOwnerId(int userId, PageRequest pageRequest);
+
     List<ItemDto> search(String text);
 
+    List<ItemDto> search(int userId, String text, PageRequest pageRequest);
+
     CommentDto addComment(int userId, int itemId, CommentRequestDto commentRequestDto);
+
+    List<ItemDto> findAllByRequestIdIn(List<Integer> listRequestIds);
+
+    List<ItemDto> findAllByRequestId(int requestId);
 }
