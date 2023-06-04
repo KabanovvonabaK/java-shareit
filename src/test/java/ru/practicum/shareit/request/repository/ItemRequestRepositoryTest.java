@@ -46,22 +46,22 @@ class ItemRequestRepositoryTest {
     @Test
     void findAllByRequester_Id() {
         Sort sort = Sort.by("created").descending();
-        List<ItemRequest> allByRequester_id = itemRequestRepository.findAllByRequester_Id(user.getId(), sort);
+        List<ItemRequest> allByRequesterId = itemRequestRepository.findAllByRequester_Id(user.getId(), sort);
 
         assertAll(
-                () -> assertNotNull(allByRequester_id),
-                () -> assertThat(allByRequester_id.size(), equalTo(1))
+                () -> assertNotNull(allByRequesterId),
+                () -> assertThat(allByRequesterId.size(), equalTo(1))
         );
     }
 
     @Test
     void findAllByRequester_IdNot() {
-        Page<ItemRequest> allByRequester_idNot = itemRequestRepository
+        Page<ItemRequest> allByRequesterIdNot = itemRequestRepository
                 .findAllByRequester_IdNot(user.getId(), PageRequest.of(0, 10));
 
         assertAll(
-                () -> assertNotNull(allByRequester_idNot),
-                () -> assertTrue(allByRequester_idNot.isEmpty())
+                () -> assertNotNull(allByRequesterIdNot),
+                () -> assertTrue(allByRequesterIdNot.isEmpty())
         );
     }
 }
