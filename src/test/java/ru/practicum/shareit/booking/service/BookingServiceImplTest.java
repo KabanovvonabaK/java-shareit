@@ -264,4 +264,106 @@ class BookingServiceImplTest {
                 .findAllByOwnerIdAndStateCurrentOrderByStartDesc(anyInt(), any());
         verify(userService, times(1)).getUserById(anyInt());
     }
+
+    @Test
+    void findAllByOwnerIdOrderByStartDesc() {
+        when(bookingRepository.findAllByOwnerIdOrderByStartDesc(anyInt(), any()))
+                .thenReturn(new ArrayList<>());
+
+        List<BookingDto> byOwnerId = bookingService.getByOwnerId(1,
+                "ALL");
+
+        assertAll(
+                () -> assertNotNull(byOwnerId),
+                () -> assertTrue(byOwnerId.isEmpty())
+        );
+        verify(bookingRepository, times(1))
+                .findAllByOwnerIdOrderByStartDesc(anyInt());
+        verify(userService, times(1)).getUserById(anyInt());
+    }
+
+    @Test
+    void findAllByOwnerIdOrderByStartDescPaged() {
+        when(bookingRepository.findAllByOwnerIdOrderByStartDesc(anyInt(), any()))
+                .thenReturn(new ArrayList<>());
+
+        List<BookingDto> byOwnerId = bookingService.getByOwnerId(1,
+                "ALL", PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byOwnerId),
+                () -> assertTrue(byOwnerId.isEmpty())
+        );
+        verify(bookingRepository, times(1))
+                .findAllByOwnerIdOrderByStartDesc(anyInt(), any());
+        verify(userService, times(1)).getUserById(anyInt());
+    }
+
+    @Test
+    void findAllByOwnerIdAndStatusOrderByStartDesc() {
+        when(bookingRepository.findAllByOwnerIdAndStatusOrderByStartDesc(anyInt(), any()))
+                .thenReturn(new ArrayList<>());
+
+        List<BookingDto> byOwnerId = bookingService.getByOwnerId(1,
+                "WAITING");
+
+        assertAll(
+                () -> assertNotNull(byOwnerId),
+                () -> assertTrue(byOwnerId.isEmpty())
+        );
+        verify(bookingRepository, times(1))
+                .findAllByOwnerIdAndStatusOrderByStartDesc(anyInt(), any());
+        verify(userService, times(1)).getUserById(anyInt());
+    }
+
+    @Test
+    void findAllByOwnerIdAndStatusOrderByStartDescPaged() {
+        when(bookingRepository.findAllByOwnerIdAndStatusOrderByStartDesc(anyInt(), any()))
+                .thenReturn(new ArrayList<>());
+
+        List<BookingDto> byOwnerId = bookingService.getByOwnerId(1,
+                "WAITING", PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byOwnerId),
+                () -> assertTrue(byOwnerId.isEmpty())
+        );
+        verify(bookingRepository, times(1))
+                .findAllByOwnerIdAndStatusOrderByStartDesc(anyInt(), any(), any());
+        verify(userService, times(1)).getUserById(anyInt());
+    }
+
+    @Test
+    void findAllByBookerIdAndStatusOrderByStartDesc() {
+        when(bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(anyInt(), any()))
+                .thenReturn(new ArrayList<>());
+
+        List<BookingDto> byBookerId = bookingService.getByBookerId(1,
+                "REJECTED");
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertTrue(byBookerId.isEmpty())
+        );
+        verify(bookingRepository, times(1))
+                .findAllByBookerIdAndStatusOrderByStartDesc(anyInt(), any());
+        verify(userService, times(1)).getUserById(anyInt());
+    }
+
+    @Test
+    void findAllByBookerIdAndStatusOrderByStartDescPaged() {
+        when(bookingRepository.findAllByBookerIdAndStatusOrderByStartDesc(anyInt(), any(), any()))
+                .thenReturn(new ArrayList<>());
+
+        List<BookingDto> byBookerId = bookingService.getByBookerId(1,
+                "REJECTED", PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertTrue(byBookerId.isEmpty())
+        );
+        verify(bookingRepository, times(1))
+                .findAllByBookerIdAndStatusOrderByStartDesc(anyInt(), any(), any());
+        verify(userService, times(1)).getUserById(anyInt());
+    }
 }

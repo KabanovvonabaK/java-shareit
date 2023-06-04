@@ -12,6 +12,7 @@ import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.errorHandler.exception.UnknownStateException;
 import ru.practicum.shareit.item.dto.ItemShortDto;
 import ru.practicum.shareit.user.dto.UserShortDto;
 
@@ -152,5 +153,26 @@ class BookingControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value(bookingDtoApproved.getStatus().name()));
         verify(bookingService, times(1)).approve(anyInt(), anyInt(), any());
+    }
+
+    @Test
+    void unknownStatus() throws Exception {
+        String state = "UNKNOWN";
+        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
+
+        when(bookingService.getByBookerId(userId, state, pageRequest))
+                .thenThrow(new UnknownStateException(state));
+
+        mockMvc.perform(get("/bookings")
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .header("X-Sharer-User-Id", userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("from", String.valueOf(from))
+                        .param("size", String.valueOf(size))
+                        .param("state", state)
+                        .accept(MediaType.ALL))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().json("{\"error\":\"Unknown state: " + state + "\"}"));
+        verify(bookingService, times(1)).getByBookerId(userId, state, pageRequest);
     }
 }
