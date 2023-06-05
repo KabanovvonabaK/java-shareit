@@ -111,6 +111,126 @@ public class BookingServiceImplIntegrationTest {
     }
 
     @Test
+    void getByBookerIdPast() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "PAST";
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state);
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByBookerIdPastPaged() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "PAST";
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByBookerIdCurrent() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "CURRENT";
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state);
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByBookerIdCurrentPaged() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "CURRENT";
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByBookerIdFuture() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "FUTURE";
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state);
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(1, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByBookerIdFuturePaged() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "FUTURE";
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(1, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByBookerIdWaiting() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "WAITING";
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state);
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(1, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByBookerIdWaitingPaged() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "WAITING";
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(1, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByBookerIdRejected() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "REJECTED";
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state);
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByBookerIdRejectedPaged() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "REJECTED";
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
     void getByOwnerId() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "ALL";
@@ -131,6 +251,126 @@ public class BookingServiceImplIntegrationTest {
         assertAll(
                 () -> assertNotNull(byBookerId),
                 () -> assertEquals(1, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByOwnerIdPast() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "PAST";
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByOwnerIdPastPaged() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "PAST";
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state);
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByOwnerIdCurrent() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "CURRENT";
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByOwnerIdCurrentPaged() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "CURRENT";
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state);
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByOwnerIdFuture() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "FUTURE";
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(1, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByOwnerIdFuturePaged() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "FUTURE";
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state);
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(1, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByOwnerIdWaiting() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "WAITING";
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(1, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByOwnerIdWaitingPaged() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "WAITING";
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state);
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(1, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByOwnerIdRejected() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "REJECTED";
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
+        );
+    }
+
+    @Test
+    void getByOwnerIdRejectedPaged() {
+        bookingService.create(user.getId(), bookingRequestDto);
+        String state = "REJECTED";
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state);
+
+        assertAll(
+                () -> assertNotNull(byBookerId),
+                () -> assertEquals(0, byBookerId.size())
         );
     }
 
