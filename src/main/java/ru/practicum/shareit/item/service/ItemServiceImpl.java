@@ -49,7 +49,8 @@ public class ItemServiceImpl implements ItemService {
         if (itemDto.getRequestId() != null) {
             ItemRequest itemRequest = itemRequestRepository
                     .findById(itemDto.getRequestId())
-                    .orElseThrow(() -> new EntityNotFoundException("Request not found"));
+                    .orElseThrow(() -> new EntityNotFoundException(String.format("Request with id %s not found",
+                            itemDto.getRequestId())));
             item.setRequest(itemRequest);
         }
         return Optional.of(itemRepository.save(ItemMapper.toItem(itemDto, item))).map(ItemMapper::toItemDto).orElseThrow();
@@ -88,11 +89,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getByOwnerId(int userId, PageRequest pageRequest) {
+    public List<ItemDto> getByOwnerId(int userId, int from, int size) {
         log.info("Attempt to get item by userId {} with pagination", userId);
+        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
         userService.getUserById(userId);
         return itemRepository.findAllByOwnerId(userId, pageRequest)
-                .stream().map(item -> addData(userId, item)).collect(Collectors.toList());
+                .stream()
+                .map(item -> addData(userId, item))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -106,8 +110,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> search(int userId, String text, PageRequest pageRequest) {
+    public List<ItemDto> search(int userId, String text, int from, int size) {
         log.info("Attempt to search by \"{}\" with pagination", text);
+        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
         userService.getUserById(userId);
         return itemRepository
                 .findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text,

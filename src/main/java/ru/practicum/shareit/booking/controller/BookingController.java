@@ -1,7 +1,6 @@
 package ru.practicum.shareit.booking.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -32,8 +31,7 @@ public class BookingController {
                                           @RequestParam(name = "state", defaultValue = "ALL") String subState,
                                           @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                           @Positive @RequestParam(value = "size", defaultValue = "10") int size) {
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
-        return bookingService.getByBookerId(bookerId, subState, pageRequest);
+        return bookingService.getByBookerId(bookerId, subState, from, size);
     }
 
     @GetMapping("/owner")
@@ -41,8 +39,7 @@ public class BookingController {
                                          @RequestParam(name = "state", defaultValue = "ALL") String subState,
                                          @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                          @Positive @RequestParam(value = "size", defaultValue = "10") int size) {
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
-        return bookingService.getByOwnerId(ownerId, subState, pageRequest);
+        return bookingService.getByOwnerId(ownerId, subState, from, size);
     }
 
     @PostMapping

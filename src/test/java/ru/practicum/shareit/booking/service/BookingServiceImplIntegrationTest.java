@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -102,7 +101,7 @@ public class BookingServiceImplIntegrationTest {
     void getByBookerIdPaged() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "ALL";
-        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -126,7 +125,7 @@ public class BookingServiceImplIntegrationTest {
     void getByBookerIdPastPaged() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "PAST";
-        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -150,7 +149,7 @@ public class BookingServiceImplIntegrationTest {
     void getByBookerIdCurrentPaged() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "CURRENT";
-        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -174,7 +173,7 @@ public class BookingServiceImplIntegrationTest {
     void getByBookerIdFuturePaged() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "FUTURE";
-        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -198,7 +197,7 @@ public class BookingServiceImplIntegrationTest {
     void getByBookerIdWaitingPaged() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "WAITING";
-        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -222,7 +221,7 @@ public class BookingServiceImplIntegrationTest {
     void getByBookerIdRejectedPaged() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "REJECTED";
-        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByBookerId(user.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -234,7 +233,7 @@ public class BookingServiceImplIntegrationTest {
     void getByOwnerId() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "ALL";
-        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -258,7 +257,7 @@ public class BookingServiceImplIntegrationTest {
     void getByOwnerIdPast() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "PAST";
-        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -282,7 +281,7 @@ public class BookingServiceImplIntegrationTest {
     void getByOwnerIdCurrent() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "CURRENT";
-        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -306,7 +305,7 @@ public class BookingServiceImplIntegrationTest {
     void getByOwnerIdFuture() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "FUTURE";
-        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -330,7 +329,7 @@ public class BookingServiceImplIntegrationTest {
     void getByOwnerIdWaiting() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "WAITING";
-        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -354,7 +353,7 @@ public class BookingServiceImplIntegrationTest {
     void getByOwnerIdRejected() {
         bookingService.create(user.getId(), bookingRequestDto);
         String state = "REJECTED";
-        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, PageRequest.of(0, 10));
+        List<BookingDto> byBookerId = bookingService.getByOwnerId(owner.getId(), state, 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.booking.BookingStatus;
@@ -80,9 +79,8 @@ class BookingControllerTest {
     @Test
     void getByBookerId() throws Exception {
         String state = "FUTURE";
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
 
-        when(bookingService.getByBookerId(userId, state, pageRequest))
+        when(bookingService.getByBookerId(userId, state, from, size))
                 .thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/bookings")
@@ -95,15 +93,14 @@ class BookingControllerTest {
                         .accept(MediaType.ALL))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
-        verify(bookingService, times(1)).getByBookerId(userId, state, pageRequest);
+        verify(bookingService, times(1)).getByBookerId(userId, state, from, size);
     }
 
     @Test
     void getByOwnerId() throws Exception {
         String state = "FUTURE";
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
 
-        when(bookingService.getByOwnerId(userId, state, pageRequest))
+        when(bookingService.getByOwnerId(userId, state, from, size))
                 .thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/bookings/owner")
@@ -116,7 +113,7 @@ class BookingControllerTest {
                         .accept(MediaType.ALL))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
-        verify(bookingService, times(1)).getByOwnerId(userId, state, pageRequest);
+        verify(bookingService, times(1)).getByOwnerId(userId, state, from, size);
     }
 
     @Test
@@ -158,9 +155,8 @@ class BookingControllerTest {
     @Test
     void unknownStatus() throws Exception {
         String state = "UNKNOWN";
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
 
-        when(bookingService.getByBookerId(userId, state, pageRequest))
+        when(bookingService.getByBookerId(userId, state, from, size))
                 .thenThrow(new UnknownStateException(state));
 
         mockMvc.perform(get("/bookings")
@@ -173,6 +169,6 @@ class BookingControllerTest {
                         .accept(MediaType.ALL))
                 .andExpect(status().is4xxClientError())
                 .andExpect(content().json("{\"error\":\"Unknown state: " + state + "\"}"));
-        verify(bookingService, times(1)).getByBookerId(userId, state, pageRequest);
+        verify(bookingService, times(1)).getByBookerId(userId, state, from, size);
     }
 }

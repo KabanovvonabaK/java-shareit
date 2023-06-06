@@ -1,8 +1,6 @@
 package ru.practicum.shareit.request.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
@@ -35,9 +33,7 @@ public class ItemRequestController {
     public List<ItemRequestDto> findAll(@RequestHeader("X-Sharer-User-Id") int userId,
                                         @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                         @Positive @RequestParam(value = "size", defaultValue = "10") int size) {
-        Sort sort = Sort.by("created").descending();
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size, sort);
-        return itemRequestService.findAll(userId, pageRequest);
+        return itemRequestService.findAll(userId, from, size);
     }
 
     @GetMapping("/{requestId}")

@@ -71,8 +71,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getByBookerId(int bookerId, String subState, PageRequest pageRequest) {
+    public List<BookingDto> getByBookerId(int bookerId, String subState, int from, int size) {
         log.info("Attempt to get by bookerId {} with pagination", bookerId);
+        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
         BookingState bookingState = getState(subState);
         User booker = UserMapper.toUser(userService.getUserById(bookerId));
         List<Booking> bookings = new ArrayList<>();
@@ -137,8 +138,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getByOwnerId(int ownerId, String subState, PageRequest pageRequest) {
+    public List<BookingDto> getByOwnerId(int ownerId, String subState, int from, int size) {
         log.info("Attempt to get booking by ownerId {} with pagination", ownerId);
+        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
         BookingState bookingState = getState(subState);
         User owner = UserMapper.toUser(userService.getUserById(ownerId));
         List<Booking> bookings = new ArrayList<>();

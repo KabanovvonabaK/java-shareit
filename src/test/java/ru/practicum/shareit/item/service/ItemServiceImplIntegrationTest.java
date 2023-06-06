@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.model.Booking;
@@ -131,7 +130,7 @@ public class ItemServiceImplIntegrationTest {
     void search() {
         itemService.create(itemDto, owner.getId());
         String text = "Item";
-        List<ItemDto> search = itemService.search(user.getId(), text, PageRequest.of(0, 10));
+        List<ItemDto> search = itemService.search(user.getId(), text, 0, 10);
 
         assertAll(
                 () -> assertNotNull(search),

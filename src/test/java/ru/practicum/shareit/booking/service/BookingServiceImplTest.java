@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
@@ -66,7 +65,7 @@ class BookingServiceImplTest {
                 .thenReturn(new ArrayList<>());
 
         List<BookingDto> byBookerId = bookingService.getByBookerId(1,
-                "ALL", PageRequest.of(0, 10));
+                "ALL", 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -169,7 +168,7 @@ class BookingServiceImplTest {
                 .thenReturn(new ArrayList<>());
 
         List<BookingDto> byBookerId = bookingService.getByBookerId(1,
-                "PAST", PageRequest.of(0, 10));
+                "PAST", 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -186,7 +185,7 @@ class BookingServiceImplTest {
                 .thenReturn(new ArrayList<>());
 
         List<BookingDto> byBookerId = bookingService.getByBookerId(1,
-                "FUTURE", PageRequest.of(0, 10));
+                "FUTURE", 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -203,7 +202,7 @@ class BookingServiceImplTest {
                 .thenReturn(new ArrayList<>());
 
         List<BookingDto> byBookerId = bookingService.getByBookerId(1,
-                "CURRENT", PageRequest.of(0, 10));
+                "CURRENT", 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),
@@ -220,7 +219,7 @@ class BookingServiceImplTest {
                 .thenReturn(new ArrayList<>());
 
         List<BookingDto> byOwnerId = bookingService.getByOwnerId(1,
-                "PAST", PageRequest.of(0, 10));
+                "PAST", 0, 10);
 
         assertAll(
                 () -> assertNotNull(byOwnerId),
@@ -237,7 +236,7 @@ class BookingServiceImplTest {
                 .thenReturn(new ArrayList<>());
 
         List<BookingDto> byOwnerId = bookingService.getByOwnerId(1,
-                "FUTURE", PageRequest.of(0, 10));
+                "FUTURE", 0, 10);
 
         assertAll(
                 () -> assertNotNull(byOwnerId),
@@ -254,7 +253,7 @@ class BookingServiceImplTest {
                 .thenReturn(new ArrayList<>());
 
         List<BookingDto> byOwnerId = bookingService.getByOwnerId(1,
-                "CURRENT", PageRequest.of(0, 10));
+                "CURRENT", 0, 10);
 
         assertAll(
                 () -> assertNotNull(byOwnerId),
@@ -288,7 +287,7 @@ class BookingServiceImplTest {
                 .thenReturn(new ArrayList<>());
 
         List<BookingDto> byOwnerId = bookingService.getByOwnerId(1,
-                "ALL", PageRequest.of(0, 10));
+                "ALL", 0, 10);
 
         assertAll(
                 () -> assertNotNull(byOwnerId),
@@ -322,7 +321,7 @@ class BookingServiceImplTest {
                 .thenReturn(new ArrayList<>());
 
         List<BookingDto> byOwnerId = bookingService.getByOwnerId(1,
-                "WAITING", PageRequest.of(0, 10));
+                "WAITING", 0, 10);
 
         assertAll(
                 () -> assertNotNull(byOwnerId),
@@ -356,7 +355,7 @@ class BookingServiceImplTest {
                 .thenReturn(new ArrayList<>());
 
         List<BookingDto> byBookerId = bookingService.getByBookerId(1,
-                "REJECTED", PageRequest.of(0, 10));
+                "REJECTED", 0, 10);
 
         assertAll(
                 () -> assertNotNull(byBookerId),

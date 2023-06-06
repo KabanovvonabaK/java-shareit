@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
@@ -91,7 +90,7 @@ public class ItemRequestServiceImplIntegrationTest {
         newUser.setName("New User");
         newUser.setEmail("new@user.com");
         UserDto userDto = userService.create(UserMapper.toUserDto(newUser));
-        List<ItemRequestDto> all = itemRequestService.findAll(userDto.getId(), PageRequest.of(0, 10));
+        List<ItemRequestDto> all = itemRequestService.findAll(userDto.getId(), 0, 10);
 
         assertAll(
                 () -> assertNotNull(all),

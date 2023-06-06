@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.comments.dto.CommentDto;
@@ -49,8 +48,7 @@ public class ItemController {
     public List<ItemDto> getByOwnerId(@RequestHeader("X-Sharer-User-Id") int userId,
                                       @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                       @Positive @RequestParam(value = "size", defaultValue = "10") int size) {
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
-        return itemService.getByOwnerId(userId, pageRequest);
+        return itemService.getByOwnerId(userId, from, size);
     }
 
     @GetMapping("/search")
@@ -61,8 +59,7 @@ public class ItemController {
         if (text.isBlank()) {
             return Collections.emptyList();
         }
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
-        return itemService.search(userId, text, pageRequest);
+        return itemService.search(userId, text, from, size);
     }
 
     @PostMapping("/{itemId}/comment")

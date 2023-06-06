@@ -55,8 +55,10 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    public List<ItemRequestDto> findAll(int userId, PageRequest pageRequest) {
-        log.info("Attempt to find all");
+    public List<ItemRequestDto> findAll(int userId, int from, int size) {
+        log.info("Attempt to find all item requests by user id {}", userId);
+        Sort sort = Sort.by("created").descending();
+        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size, sort);
         userService.getUserById(userId);
         List<ItemRequestDto> itemRequestDtoList = itemRequestRepository
                 .findAllByRequester_IdNot(userId, pageRequest)
@@ -67,7 +69,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public ItemRequestDto findByRequestId(int userId, int requestId) {
-        log.info("Attempt to find request by id");
+        log.info("Attempt to find request by id {} via user with id {}", requestId, userId);
         userService.getUserById(userId);
         ItemRequestDto itemRequestDto = ItemRequestMapper
                 .toItemRequestDto(itemRequestRepository

@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
@@ -90,7 +89,7 @@ class ItemRequestServiceImplTest {
         when(itemRequestRepository.findAllByRequester_IdNot(anyInt(), any()))
                 .thenReturn(Page.empty());
 
-        List<ItemRequestDto> all = itemRequestService.findAll(1, PageRequest.of(0, 10));
+        List<ItemRequestDto> all = itemRequestService.findAll(1, 0, 10);
 
         assertAll(
                 () -> assertNotNull(all),

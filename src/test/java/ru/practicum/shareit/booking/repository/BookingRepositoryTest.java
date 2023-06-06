@@ -12,6 +12,7 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,7 @@ class BookingRepositoryTest {
     private Item item;
     private User user;
     final PageRequest pageRequest = PageRequest.of(0, 10);
+    private final Clock clock = Clock.systemUTC();
 
     @BeforeEach
     public void setUp() {
@@ -44,8 +46,8 @@ class BookingRepositoryTest {
         item.setOwner(user);
         itemRepository.save(item);
         booking = new Booking();
-        booking.setStart(LocalDateTime.now().plusDays(1));
-        booking.setEnd(LocalDateTime.now().plusDays(3));
+        booking.setStart(LocalDateTime.now(clock).plusDays(1));
+        booking.setEnd(LocalDateTime.now(clock).plusDays(3));
         booking.setItem(item);
         booking.setBooker(user);
         booking.setStatus(BookingStatus.WAITING);
@@ -275,7 +277,7 @@ class BookingRepositoryTest {
     void findFirstByItemIdAndStartBeforeAndStatusOrderByEndDesc() {
         Optional<Booking> result = bookingRepository
                 .findFirstByItemIdAndStartBeforeAndStatusOrderByEndDesc(item.getId(),
-                        LocalDateTime.now(), BookingStatus.WAITING);
+                        LocalDateTime.now(clock), BookingStatus.WAITING);
 
         assertAll(
                 () -> assertNotNull(result)
@@ -286,7 +288,7 @@ class BookingRepositoryTest {
     void findFirstByItemIdAndStartAfterAndStatusOrderByEndAsc() {
         Optional<Booking> result = bookingRepository
                 .findFirstByItemIdAndStartAfterAndStatusOrderByEndAsc(item.getId(),
-                        LocalDateTime.now(), BookingStatus.WAITING);
+                        LocalDateTime.now(clock), BookingStatus.WAITING);
 
         assertAll(
                 () -> assertNotNull(result)
@@ -297,7 +299,7 @@ class BookingRepositoryTest {
     void existsByBookerIdAndItemIdAndEndBefore() {
         Boolean result = bookingRepository
                 .existsByBookerIdAndItemIdAndEndBefore(user.getId(),
-                        item.getId(), LocalDateTime.now());
+                        item.getId(), LocalDateTime.now(clock));
 
         assertAll(
                 () -> assertNotNull(result),

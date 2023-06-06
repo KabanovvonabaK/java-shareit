@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.item.comments.dto.CommentDto;
@@ -106,9 +105,7 @@ class ItemControllerTest {
 
     @Test
     void getByOwnerId() throws Exception {
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
-
-        when(itemService.getByOwnerId(userId, pageRequest))
+        when(itemService.getByOwnerId(userId, from, size))
                 .thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/items")
@@ -120,15 +117,14 @@ class ItemControllerTest {
                         .accept(MediaType.ALL))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
-        verify(itemService, times(1)).getByOwnerId(userId, pageRequest);
+        verify(itemService, times(1)).getByOwnerId(userId, from, size);
     }
 
     @Test
     void search() throws Exception {
         String text = "Text";
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
 
-        when(itemService.search(userId, text, pageRequest))
+        when(itemService.search(userId, text, from, size))
                 .thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/items/search")
@@ -141,7 +137,7 @@ class ItemControllerTest {
                         .accept(MediaType.ALL))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
-        verify(itemService, times(1)).search(userId, text, pageRequest);
+        verify(itemService, times(1)).search(userId, text, from, size);
     }
 
     @Test

@@ -163,7 +163,7 @@ class ItemServiceImplTest {
                         "Text", PageRequest.of(0, 10)))
                 .thenReturn(Page.empty());
 
-        List<ItemDto> result = itemService.search(user.getId(), "Text", PageRequest.of(0, 10));
+        List<ItemDto> result = itemService.search(user.getId(), "Text", 0, 10);
 
         assertAll(
                 () -> assertNotNull(result),

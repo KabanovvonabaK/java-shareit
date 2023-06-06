@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -86,9 +85,8 @@ class ItemRequestControllerTest {
         int from = 0;
         int size = 10;
         Sort sort = Sort.by("created").descending();
-        PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size, sort);
 
-        when(itemRequestService.findAll(userId, pageRequest))
+        when(itemRequestService.findAll(userId, from, size))
                 .thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/requests/all")
@@ -101,7 +99,7 @@ class ItemRequestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
 
-        verify(itemRequestService, times(1)).findAll(userId, pageRequest);
+        verify(itemRequestService, times(1)).findAll(userId, from, size);
     }
 
     @Test
