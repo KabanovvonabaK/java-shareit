@@ -9,7 +9,11 @@ public interface BookingService {
 
     List<BookingDto> getByBookerId(int bookerId, String subState);
 
+    List<BookingDto> getByBookerId(int bookerId, String subState, int from, int size);
+
     List<BookingDto> getByOwnerId(int ownerId, String subState);
+
+    List<BookingDto> getByOwnerId(int ownerId, String subState, int from, int size);
 
     BookingDto getById(int userId, int bookingId);
 

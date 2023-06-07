@@ -15,7 +15,15 @@ public interface ItemService {
 
     List<ItemDto> getByOwnerId(int userId);
 
+    List<ItemDto> getByOwnerId(int userId, int from, int size);
+
     List<ItemDto> search(String text);
 
+    List<ItemDto> search(int userId, String text, int from, int size);
+
     CommentDto addComment(int userId, int itemId, CommentRequestDto commentRequestDto);
+
+    List<ItemDto> findAllByRequestIdIn(List<Integer> listRequestIds);
+
+    List<ItemDto> findAllByRequestId(int requestId);
 }

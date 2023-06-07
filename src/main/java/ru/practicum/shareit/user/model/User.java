@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Table(name = "USERS", schema = "PUBLIC")
 public class User {
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;

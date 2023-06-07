@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.booking.dto.BookingShortDto;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ItemDto {
     private int id;
     @NotBlank(groups = {Create.class}, message = "Name is mandatory")
@@ -25,12 +27,14 @@ public class ItemDto {
     private BookingShortDto lastBooking;
     private BookingShortDto nextBooking;
     private List<CommentDto> comments;
+    private Integer requestId;
 
-    public ItemDto(int id, String name, String description, Boolean available, UserShortDto owner) {
+    public ItemDto(int id, String name, String description, Boolean available, UserShortDto owner, Integer requestId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.available = available;
         this.owner = owner;
+        this.requestId = requestId;
     }
 }
