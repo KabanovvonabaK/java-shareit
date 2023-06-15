@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.CommentRequestDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemShortDto;
 import ru.practicum.shareit.utils.Create;
 
@@ -20,7 +21,7 @@ public class ItemController {
     private final ItemClient itemClient;
 
     @PostMapping
-    public ResponseEntity<Object> create(@Validated(Create.class) @RequestBody ItemShortDto itemShortDto,
+    public ResponseEntity<Object> create(@Validated(Create.class) @RequestBody ItemDto itemShortDto,
                                  @RequestHeader("X-Sharer-User-Id") int userId) {
         return itemClient.create(userId, itemShortDto);
     }

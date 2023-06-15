@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
-import ru.practicum.shareit.booking.dto.BookingState;
+import ru.practicum.shareit.booking.dto.BookingStatus;
 import ru.practicum.shareit.errorHandler.exception.UnknownStateException;
 
 import javax.validation.Valid;
@@ -27,7 +27,7 @@ public class BookingController {
                                               @RequestParam(name = "state", defaultValue = "all") String stateParam,
                                               @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                               @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        BookingState state = BookingState.from(stateParam)
+        BookingStatus state = BookingStatus.from(stateParam)
                 .orElseThrow(() -> new UnknownStateException(stateParam));
         log.info("Get booking with state {}, userId={}, from={}, size={}", stateParam, userId, from, size);
         return bookingClient.getBookings(userId, state, from, size);
@@ -59,7 +59,7 @@ public class BookingController {
                                          @RequestParam(name = "state", defaultValue = "ALL") String subState,
                                          @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                          @Positive @RequestParam(value = "size", defaultValue = "10") int size) {
-        BookingState state = BookingState.from(subState)
+        BookingStatus state = BookingStatus.from(subState)
                 .orElseThrow(() -> new UnknownStateException(subState));
         return bookingClient.getByOwnerId(ownerId, state, from, size);
     }
