@@ -46,10 +46,6 @@ public class ItemClient extends BaseClient {
     public ResponseEntity<Object> updateItem(int itemId, int userId, ItemShortDto itemShortDto) {
         return patch("/" + itemId, userId, itemShortDto);
     }
-//    TODO recheck
-//    public ResponseEntity<Object> delete(int userId, int itemId) {
-//        return delete("/" + itemId, userId);
-//    }
 
     public ResponseEntity<Object> search(int userId, String text, int from, int size) {
         Map<String, Object> parameters = Map.of(
