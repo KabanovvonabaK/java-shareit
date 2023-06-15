@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.serice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
@@ -92,8 +93,9 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDto> getByOwnerId(int userId, int from, int size) {
         log.info("Attempt to get item by userId {} with pagination", userId);
         PageRequest pageRequest = PageRequest.of(from > 0 ? from / size : 0, size);
+        Sort sort = Sort.by("id").ascending();
         userService.getUserById(userId);
-        return itemRepository.findAllByOwnerId(userId, pageRequest)
+        return itemRepository.findAllByOwnerId(userId, pageRequest, sort)
                 .stream()
                 .map(item -> addData(userId, item))
                 .collect(Collectors.toList());

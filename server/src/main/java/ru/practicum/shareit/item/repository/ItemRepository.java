@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.practicum.shareit.item.model.Item;
@@ -22,6 +23,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     List<Item> findAllByRequestId(int requestId);
 
     Page<Item> findAllByOwnerId(int ownerId, PageRequest pageRequest);
+    Page<Item> findAllByOwnerId(int ownerId, PageRequest pageRequest, Sort sort);
 
     Page<Item> findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(String textName,
                                                                                                     String textDescription,
