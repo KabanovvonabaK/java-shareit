@@ -23,7 +23,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     List<Item> findAllByRequestId(int requestId);
 
     Page<Item> findAllByOwnerId(int ownerId, PageRequest pageRequest);
-    
+
     Page<Item> findAllByOwnerId(int ownerId, PageRequest pageRequest, Sort sort);
 
     Page<Item> findAllByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(String textName,
